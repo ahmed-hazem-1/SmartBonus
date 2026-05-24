@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Bonus</title>
+    <script>
+      // SPA redirect: GitHub Pages doesn't support client-side routing natively.
+      // This redirects all 404s back to index.html with the path preserved.
+      const path = window.location.pathname;
+      window.location.replace('/SmartBonus/' + '?redirect=' + encodeURIComponent(path));
+    </script>
+  </head>
+  <body></body>
+</html>
