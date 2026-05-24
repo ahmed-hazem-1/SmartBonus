@@ -1,0 +1,6 @@
+{
+  "name": "Smart Bonus Pre-Launch",
+  "description": "A smart B2B procurement platform landing page designed for waitlisting pharmacies, clinics, and suppliers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
