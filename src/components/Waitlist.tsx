@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/Button';
+import { ChevronDown } from 'lucide-react';
 
 export function Waitlist() {
   const [formData, setFormData] = useState({
@@ -9,6 +10,20 @@ export function Waitlist() {
     activity: 'Pharmacy'
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const activityOptions = ['Pharmacy', 'Clinic', 'Supplier'];
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,13 +32,16 @@ export function Waitlist() {
   };
 
   return (
-    <section id="waitlist" className="py-24 bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gray-50 rounded-[2rem] border border-gray-100 p-10 md:p-16 flex flex-col items-center text-center">
+    <section id="waitlist" className="py-24 relative overflow-hidden min-h-screen flex items-center gradient-light">
+      {/* Subtle background blob for glass effect */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-yellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className="glass-card rounded-[2rem] p-10 md:p-16 flex flex-col items-center text-center">
           
           {isSubmitted ? (
             <div className="py-12">
-              <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-100">
+              <div className="w-16 h-16 bg-green-50/80 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-100">
                  <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                  </svg>
@@ -37,19 +55,19 @@ export function Waitlist() {
                 <h2 className="text-3xl md:text-4xl font-bold text-brand-navy mb-4">
                   Be One of the First Onboarded
                 </h2>
-                <div className="w-24 h-1 bg-brand-yellow/30 mx-auto rounded-full mb-6"></div>
+                <div className="w-24 h-1 bg-brand-yellow/50 mx-auto rounded-full mb-6"></div>
                 <p className="text-brand-gray text-lg">
                   Register your interest now to secure early access and priority setup for your business.
                 </p>
               </div>
-
+ 
               <form onSubmit={handleSubmit} className="w-full max-w-2xl space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <input 
                     required
                     type="text" 
                     placeholder="Pharmacy / Business Name"
-                    className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white text-brand-navy"
+                    className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
                     value={formData.businessName}
                     onChange={e => setFormData({...formData, businessName: e.target.value})}
                   />
@@ -57,40 +75,76 @@ export function Waitlist() {
                     required
                     type="tel" 
                     placeholder="Phone Number"
-                    className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white text-brand-navy"
+                    className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
                     value={formData.phone}
                     onChange={e => setFormData({...formData, phone: e.target.value})}
                   />
                 </div>
-
+ 
                 <div className="grid md:grid-cols-[1fr_1fr_auto] gap-4 items-center">
                   <input 
                     required
                     type="text" 
                     placeholder="City / location"
-                    className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white text-brand-navy"
+                    className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
                     value={formData.city}
                     onChange={e => setFormData({...formData, city: e.target.value})}
                   />
                   
-                  <select 
-                    className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white text-brand-navy appearance-none"
-                    value={formData.activity}
-                    onChange={e => setFormData({...formData, activity: e.target.value})}
-                  >
-                    <option value="Pharmacy">Pharmacy</option>
-                    <option value="Clinic">Clinic</option>
-                    <option value="Supplier">Supplier</option>
-                  </select>
+                  {/* Custom dropdown */}
+                  <div ref={dropdownRef} className="relative w-full">
+                    {/* Trigger */}
+                    <button
+                      type="button"
+                      onClick={() => setDropdownOpen((o) => !o)}
+                      className="w-full px-5 py-4 rounded-full border border-white/40 bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm flex items-center justify-between gap-2 focus:outline-none focus:ring-2 focus:ring-brand-yellow transition-all"
+                    >
+                      <span className="font-medium">{formData.activity}</span>
+                      <ChevronDown
+                        className={`w-4 h-4 text-brand-navy/60 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
+                      />
+                    </button>
 
-                  <Button type="submit" size="lg" className="w-full md:w-auto h-full min-h-[56px] rounded-xl px-10">
+                    {/* Dropdown panel */}
+                    {dropdownOpen && (
+                      <div
+                        className="absolute z-50 mt-2 w-full rounded-2xl overflow-hidden"
+                        style={{
+                          background: 'rgba(11,25,44,0.96)',
+                          backdropFilter: 'blur(20px)',
+                          border: '1px solid rgba(255,255,255,0.08)',
+                          boxShadow: '0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(217,119,6,0.15)',
+                        }}
+                      >
+                        {activityOptions.map((opt) => (
+                          <button
+                            key={opt}
+                            type="button"
+                            onClick={() => {
+                              setFormData({ ...formData, activity: opt });
+                              setDropdownOpen(false);
+                            }}
+                            className={`w-full text-left px-5 py-3.5 text-sm font-bold transition-all duration-150 ${
+                              formData.activity === opt
+                                ? 'bg-brand-yellow text-brand-navy'
+                                : 'text-white/80 hover:bg-white/5 hover:text-white'
+                            }`}
+                          >
+                            {opt}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+ 
+                  <Button type="submit" size="lg" className="w-full md:w-auto h-full min-h-[56px] px-10 shadow-md hover:-translate-y-0.5 transition-transform">
                     Join Waitlist
                   </Button>
                 </div>
               </form>
             </>
           )}
-
+ 
         </div>
       </div>
     </section>

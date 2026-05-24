@@ -3,8 +3,8 @@ import { ShieldCheck } from 'lucide-react';
 
 export function Trust() {
   return (
-    <section className="py-16 bg-gray-50 border-y border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <section id="partner" className="py-16 border-y border-gray-100 min-h-screen flex items-center gradient-light">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
         <div className="inline-flex items-center justify-center p-3 bg-white rounded-full border border-gray-100 mb-6 shadow-sm">
            <ShieldCheck className="w-6 h-6 text-brand-navy" />
         </div>

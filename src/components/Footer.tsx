@@ -2,8 +2,8 @@ import React from 'react';
 
 export function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-100 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
+    <footer id="footer" className="border-t border-gray-100 min-h-screen flex flex-col items-center justify-center py-16 gradient-light">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center w-full">
         
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-brand-navy mb-2">Smart Bonus</h2>
