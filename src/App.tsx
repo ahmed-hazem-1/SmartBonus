@@ -22,8 +22,28 @@ function useSectionScroll() {
       // Don't intercept if ctrlKey is pressed (zooming)
       if (e.ctrlKey) return;
       
-      e.preventDefault();
+      const isMobile = window.innerWidth < 768;
+      const currentSectionId = sections[currentIndex.current];
+      const currentElement = document.getElementById(currentSectionId);
+
+      if (isMobile && currentElement) {
+        const rect = currentElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+
+        // If the section is taller than the screen, allow native scrolling until edges
+        if (rect.height > viewportHeight) {
+          const isAtTop = rect.top >= -2;
+          const isAtBottom = rect.bottom <= viewportHeight + 2;
+
+          if (e.deltaY > 0 && !isAtBottom) {
+            return;
+          } else if (e.deltaY < 0 && !isAtTop) {
+            return;
+          }
+        }
+      }
       
+      e.preventDefault();
       if (isAnimating.current) return;
 
       if (e.deltaY > 0) {
@@ -48,21 +68,102 @@ function useSectionScroll() {
         return;
       }
 
+      const isDown = e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey);
+      const isUp = e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey);
+
+      if (!isDown && !isUp) return;
+
+      const isMobile = window.innerWidth < 768;
+      const currentSectionId = sections[currentIndex.current];
+      const currentElement = document.getElementById(currentSectionId);
+
+      if (isMobile && currentElement) {
+        const rect = currentElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+
+        // If the section is taller than the screen, allow native scrolling until edges
+        if (rect.height > viewportHeight) {
+          const isAtTop = rect.top >= -2;
+          const isAtBottom = rect.bottom <= viewportHeight + 2;
+
+          if (isDown && !isAtBottom) {
+            return;
+          } else if (isUp && !isAtTop) {
+            return;
+          }
+        }
+      }
+
+      e.preventDefault();
       if (isAnimating.current) return;
       
-      if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
-        e.preventDefault();
+      if (isDown) {
         if (currentIndex.current < sections.length - 1) {
           currentIndex.current++;
           scrollToSection(sections[currentIndex.current]);
         }
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
-        e.preventDefault();
+      } else if (isUp) {
         if (currentIndex.current > 0) {
           currentIndex.current--;
           scrollToSection(sections[currentIndex.current]);
         }
       }
+    };
+
+    let touchStartY = 0;
+    
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const isMobile = window.innerWidth < 768;
+      if (!isMobile) return;
+
+      const touchY = e.touches[0].clientY;
+      const deltaY = touchStartY - touchY;
+      
+      // Ignore small movements to prevent accidental snaps
+      if (Math.abs(deltaY) < 10) return;
+
+      const currentSectionId = sections[currentIndex.current];
+      const currentElement = document.getElementById(currentSectionId);
+
+      if (currentElement) {
+        const rect = currentElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+
+        if (rect.height > viewportHeight) {
+          const isAtTop = rect.top >= -2;
+          const isAtBottom = rect.bottom <= viewportHeight + 2;
+
+          if (deltaY > 0 && !isAtBottom) {
+            return; // Allow native scroll
+          } else if (deltaY < 0 && !isAtTop) {
+            return; // Allow native scroll
+          }
+        }
+      }
+
+      if (e.cancelable) {
+        e.preventDefault();
+      }
+      
+      if (isAnimating.current) return;
+
+      if (deltaY > 0) {
+        if (currentIndex.current < sections.length - 1) {
+          currentIndex.current++;
+          scrollToSection(sections[currentIndex.current]);
+        }
+      } else {
+        if (currentIndex.current > 0) {
+          currentIndex.current--;
+          scrollToSection(sections[currentIndex.current]);
+        }
+      }
+      
+      touchStartY = touchY;
     };
 
     const scrollToSection = (id: string) => {
@@ -102,10 +203,14 @@ function useSectionScroll() {
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
       observer.disconnect();
     };
   }, []);
