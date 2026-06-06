@@ -76,7 +76,8 @@ export function Hero() {
   });
 
   return (
-    <section ref={sectionRef} id="hero" className="relative min-h-screen flex flex-col justify-end pb-0 lg:pb-16 pt-28 lg:pt-32 overflow-hidden fluid-bg-container">
+    <>
+      <section ref={sectionRef} id="hero" className="relative min-h-screen flex flex-col justify-end pb-0 lg:pb-16 pt-28 lg:pt-32 overflow-hidden fluid-bg-container">
       {/* Fluid marble blobs — reduced from 6 to 4 for performance.
           Same visual coverage via slightly larger sizes. Animations pause when off-screen. */}
       <div className="fluid-blob" style={{ width: '65%', height: '70%', top: '-10%', left: '-10%', background: 'radial-gradient(circle, #d97706 0%, #b45309 40%, transparent 70%)', ...blobAnimStyle('blob1 18s ease-in-out infinite') }} />
@@ -164,6 +165,8 @@ export function Hero() {
         </div>
       </div>
 
+    </section>
+
       {/* Sticky Mobile CTA */}
       <AnimatePresence>
         {showStickyCTA && !isWaitlistVisible && (
@@ -182,6 +185,6 @@ export function Hero() {
           </motion.div>
         )}
       </AnimatePresence>
-    </section>
+    </>
   );
 }
