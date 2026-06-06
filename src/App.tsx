@@ -22,11 +22,10 @@ function useSectionScroll() {
       // Don't intercept if ctrlKey is pressed (zooming)
       if (e.ctrlKey) return;
       
-      const isMobile = window.innerWidth < 768;
       const currentSectionId = sections[currentIndex.current];
       const currentElement = document.getElementById(currentSectionId);
 
-      if (isMobile && currentElement) {
+      if (currentElement) {
         const rect = currentElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
 
@@ -73,11 +72,10 @@ function useSectionScroll() {
 
       if (!isDown && !isUp) return;
 
-      const isMobile = window.innerWidth < 768;
       const currentSectionId = sections[currentIndex.current];
       const currentElement = document.getElementById(currentSectionId);
 
-      if (isMobile && currentElement) {
+      if (currentElement) {
         const rect = currentElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
 
@@ -117,9 +115,6 @@ function useSectionScroll() {
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      const isMobile = window.innerWidth < 768;
-      if (!isMobile) return;
-
       const touchY = e.touches[0].clientY;
       const deltaY = touchStartY - touchY;
       
