@@ -12,14 +12,25 @@ const FEATURE_ICONS = [
   <TrendingUp className="w-6 h-6 text-brand-yellow" />,
 ];
 
+// Shared animation variant — defined once, avoids creating inline objects per render
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const fadeScale = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { opacity: 1, scale: 1 },
+};
+
 export function Features() {
   const { t } = useI18n();
 
   return (
     <section id="features" className="py-24 relative overflow-hidden gradient-light">
-      {/* Subtle background blobs */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-brand-yellow/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-navy/5 rounded-full blur-[120px] pointer-events-none" />
+      {/* Subtle background blobs — static, no animation needed here */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-brand-yellow/10 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-navy/5 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
 
@@ -38,10 +49,11 @@ export function Features() {
           {t.features.items.map((feature, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.07 }}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.35, delay: idx * 0.06 }}
               className="glass-card p-6 rounded-2xl hover:-translate-y-1 transition-transform duration-300"
             >
               <div className="w-12 h-12 rounded-xl bg-white/60 border border-white flex items-center justify-center shadow-sm mb-4">
@@ -66,10 +78,11 @@ export function Features() {
             {t.features.imagineItems.map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.05 }}
+                variants={fadeScale}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-20px' }}
+                transition={{ duration: 0.25, delay: i * 0.04 }}
                 className="flex flex-col items-center gap-2"
               >
                 <span className="text-3xl">{item.emoji}</span>

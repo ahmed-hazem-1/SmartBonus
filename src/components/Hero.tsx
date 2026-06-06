@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PhoneMockup } from './PhoneMockup';
 import { useI18n } from '../i18n';
@@ -8,6 +8,8 @@ export function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showStickyCTA, setShowStickyCTA] = useState(false);
   const [isWaitlistVisible, setIsWaitlistVisible] = useState(false);
+  const [blobsPaused, setBlobsPaused] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setCurrentIndex(0);
@@ -16,45 +18,73 @@ export function Hero() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % t.hero.painPoints.length);
-    }, 4500); // Roll every 4.5 seconds
+    }, 4500);
     return () => clearInterval(timer);
   }, [t.hero.painPoints]);
 
+  // Throttled scroll handler for sticky CTA
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      // Show sticky CTA after scrolling down 300px
-      setShowStickyCTA(window.scrollY > 300);
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          setShowStickyCTA(window.scrollY > 300);
+          ticking = false;
+        });
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Pause blob animations when hero section is off-screen (saves GPU)
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setBlobsPaused(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     const el = document.getElementById('waitlist');
     if (!el) return;
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsWaitlistVisible(entry.isIntersecting);
       },
       { threshold: 0.1 }
     );
-
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  return (
-    <section id="hero" className="relative min-h-screen flex flex-col justify-end pb-0 lg:pb-16 pt-28 lg:pt-32 overflow-hidden fluid-bg-container">
-      {/* Fluid marble blobs */}
-      <div className="fluid-blob" style={{ width: '60%', height: '70%', top: '-10%', left: '-10%', background: 'radial-gradient(circle, #d97706 0%, #b45309 40%, transparent 70%)', animation: 'blob1 15s ease-in-out infinite' }} />
-      <div className="fluid-blob" style={{ width: '50%', height: '60%', bottom: '-15%', right: '-5%', background: 'radial-gradient(circle, #fbbf24 0%, #d97706 35%, transparent 70%)', animation: 'blob2 17s ease-in-out infinite' }} />
-      <div className="fluid-blob" style={{ width: '45%', height: '55%', top: '20%', right: '15%', background: 'radial-gradient(circle, #0c4a6e 0%, #0b3142 50%, transparent 70%)', animation: 'blob3 13s ease-in-out infinite' }} />
-      <div className="fluid-blob" style={{ width: '55%', height: '50%', bottom: '5%', left: '20%', background: 'radial-gradient(circle, #164e63 0%, #083344 45%, transparent 70%)', animation: 'blob4 18s ease-in-out infinite' }} />
-      <div className="fluid-blob" style={{ width: '35%', height: '40%', top: '40%', left: '5%', background: 'radial-gradient(circle, #f59e0b 0%, #92400e 40%, transparent 70%)', animation: 'blob2 14s ease-in-out infinite reverse' }} />
-      <div className="fluid-blob" style={{ width: '40%', height: '45%', top: '5%', right: '30%', background: 'radial-gradient(circle, #0e7490 0%, #155e75 50%, transparent 70%)', animation: 'blob1 16s ease-in-out infinite reverse' }} />
+  const scrollToWaitlist = useCallback(() => {
+    window.dispatchEvent(new CustomEvent('scrollToSection', { detail: { id: 'waitlist' } }));
+  }, []);
 
-      {/* Glass overlay over the fluid background */}
+  // Blob animation style — paused when off-screen
+  const blobAnimStyle = (animation: string): React.CSSProperties => ({
+    animationPlayState: blobsPaused ? 'paused' : 'running',
+    animation,
+  });
+
+  return (
+    <section ref={sectionRef} id="hero" className="relative min-h-screen flex flex-col justify-end pb-0 lg:pb-16 pt-28 lg:pt-32 overflow-hidden fluid-bg-container">
+      {/* Fluid marble blobs — reduced from 6 to 4 for performance.
+          Same visual coverage via slightly larger sizes. Animations pause when off-screen. */}
+      <div className="fluid-blob" style={{ width: '65%', height: '70%', top: '-10%', left: '-10%', background: 'radial-gradient(circle, #d97706 0%, #b45309 40%, transparent 70%)', ...blobAnimStyle('blob1 18s ease-in-out infinite') }} />
+      <div className="fluid-blob" style={{ width: '55%', height: '65%', bottom: '-15%', right: '-5%', background: 'radial-gradient(circle, #fbbf24 0%, #d97706 35%, transparent 70%)', ...blobAnimStyle('blob2 20s ease-in-out infinite') }} />
+      <div className="fluid-blob" style={{ width: '50%', height: '55%', top: '20%', right: '10%', background: 'radial-gradient(circle, #0c4a6e 0%, #0b3142 50%, transparent 70%)', ...blobAnimStyle('blob3 16s ease-in-out infinite') }} />
+      <div className="fluid-blob" style={{ width: '55%', height: '55%', bottom: '5%', left: '15%', background: 'radial-gradient(circle, #164e63 0%, #083344 45%, transparent 70%)', ...blobAnimStyle('blob4 22s ease-in-out infinite') }} />
+
+      {/* Glass overlay */}
       <div className="absolute inset-0 glass-hero z-10 pointer-events-none"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-20">
@@ -96,7 +126,7 @@ export function Hero() {
                   {t.hero.title}
                 </h1>
 
-                {/* Emotional divider & Story combined to save vertical space on mobile */}
+                {/* Emotional divider & Story */}
                 <div className="text-center lg:text-start max-w-2xl mx-auto lg:mx-0">
                   <p className="text-white/80 text-sm sm:text-base lg:text-lg leading-relaxed inline">
                     {t.hero.divider}{' '}
@@ -112,7 +142,7 @@ export function Hero() {
                 <motion.button
                   whileTap={{ scale: 0.97 }}
                   whileHover={{ scale: 1.02 }}
-                  onClick={() => window.dispatchEvent(new CustomEvent('scrollToSection', { detail: { id: 'waitlist' } }))}
+                  onClick={scrollToWaitlist}
                   className="inline-flex items-center gap-2 px-6 py-3 lg:px-8 lg:py-4 rounded-full bg-brand-yellow text-white font-bold text-sm lg:text-base shadow-lg hover:bg-yellow-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2"
                 >
                   {t.hero.cta}
@@ -144,7 +174,7 @@ export function Hero() {
             className="fixed bottom-6 left-4 right-4 z-[100] lg:hidden"
           >
             <button
-              onClick={() => window.dispatchEvent(new CustomEvent('scrollToSection', { detail: { id: 'waitlist' } }))}
+              onClick={scrollToWaitlist}
               className="w-full py-4 rounded-2xl bg-brand-yellow text-white font-bold text-lg border border-yellow-400/50 flex justify-center items-center gap-2"
             >
               {t.hero.cta}

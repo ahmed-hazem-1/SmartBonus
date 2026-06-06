@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 import screen1 from '../images/1.png';
@@ -8,19 +8,51 @@ import screen4 from '../images/4.png';
 
 const screens = [screen1, screen2, screen3, screen4];
 
-/* ── Live clock ── */
+/* ── Live clock — updates every 30s instead of 1s to reduce rerenders ── */
 function useTime() {
   const [time, setTime] = useState(() =>
     new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   );
   useEffect(() => {
     const t = setInterval(() =>
-      setTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })), 1000
+      setTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })), 30_000
     );
     return () => clearInterval(t);
   }, []);
   return time;
 }
+
+/* ── Status Bar — memoized to prevent needless re-renders ── */
+const StatusBar = memo(function StatusBar({ time }: { time: string }) {
+  return (
+    <div className="flex items-center justify-between px-5 pt-3 pb-1 relative z-30" style={{ background: 'rgba(0,0,0,0.0)' }}>
+      <span className="text-[10px] font-semibold text-white">{time}</span>
+      {/* Dynamic island space */}
+      <div className="w-20" />
+      <div className="flex items-center gap-1.5">
+        {/* Signal bars */}
+        <div className="flex items-end gap-[2px]">
+          {[3, 5, 7, 9].map((h, i) => (
+            <div key={i} className="w-[3px] rounded-[1px] bg-white" style={{ height: `${h}px` }} />
+          ))}
+        </div>
+        {/* WiFi */}
+        <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
+          <path d="M6 7.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="white" />
+          <path d="M3.5 5.5C4.2 4.8 5 4.5 6 4.5s1.8.3 2.5 1" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none" />
+          <path d="M1.5 3.5C2.8 2.2 4.3 1.5 6 1.5s3.2.7 4.5 2" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none" />
+        </svg>
+        {/* Battery */}
+        <div className="flex items-center gap-[1px]">
+          <div className="w-5 h-2.5 rounded-[3px] border border-white/70 relative p-[2px]">
+            <div className="h-full w-[70%] bg-white rounded-[1px]" />
+          </div>
+          <div className="w-[2px] h-1.5 bg-white/50 rounded-r-[1px]" />
+        </div>
+      </div>
+    </div>
+  );
+});
 
 /* ── Phone Mockup ── */
 export function PhoneMockup() {
@@ -112,33 +144,8 @@ export function PhoneMockup() {
               flexDirection: 'column',
             }}
           >
-            {/* ── Status bar ── */}
-            <div className="flex items-center justify-between px-5 pt-3 pb-1 relative z-30" style={{ background: 'rgba(0,0,0,0.0)' }}>
-              <span className="text-[10px] font-semibold text-white">{time}</span>
-              {/* Dynamic island space */}
-              <div className="w-20" />
-              <div className="flex items-center gap-1.5">
-                {/* Signal bars */}
-                <div className="flex items-end gap-[2px]">
-                  {[3, 5, 7, 9].map((h, i) => (
-                    <div key={i} className="w-[3px] rounded-[1px] bg-white" style={{ height: `${h}px` }} />
-                  ))}
-                </div>
-                {/* WiFi */}
-                <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
-                  <path d="M6 7.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="white" />
-                  <path d="M3.5 5.5C4.2 4.8 5 4.5 6 4.5s1.8.3 2.5 1" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none" />
-                  <path d="M1.5 3.5C2.8 2.2 4.3 1.5 6 1.5s3.2.7 4.5 2" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none" />
-                </svg>
-                {/* Battery */}
-                <div className="flex items-center gap-[1px]">
-                  <div className="w-5 h-2.5 rounded-[3px] border border-white/70 relative p-[2px]">
-                    <div className="h-full w-[70%] bg-white rounded-[1px]" />
-                  </div>
-                  <div className="w-[2px] h-1.5 bg-white/50 rounded-r-[1px]" />
-                </div>
-              </div>
-            </div>
+            {/* ── Status bar (memoized) ── */}
+            <StatusBar time={time} />
 
             {/* ── Dynamic Island ── */}
             <div
@@ -173,7 +180,7 @@ export function PhoneMockup() {
               />
             </div>
 
-            {/* ── Screen content ── */}
+            {/* ── Screen content — uses CSS transition for opacity + lighter transform ── */}
             <div style={{ position: 'relative', overflow: 'hidden', flex: 1 }}>
               <AnimatePresence>
                 <motion.img
@@ -183,7 +190,9 @@ export function PhoneMockup() {
                   initial={{ x: '100%' }}
                   animate={{ x: 0 }}
                   exit={{ x: '-100%' }}
-                  transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  loading="lazy"
+                  decoding="async"
                   style={{
                     position: 'absolute',
                     top: 0, left: 0,

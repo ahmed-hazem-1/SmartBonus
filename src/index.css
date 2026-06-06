@@ -36,70 +36,72 @@
 }
 
 @layer utilities {
-  /* Fluid marble blob animations */
+  /* ── Fluid marble blob animations ──
+     Optimized: fewer keyframe steps, using translate3d for GPU compositing,
+     reduced blur from 80px → 50px for less paint cost */
   @keyframes blob1 {
-    0%, 100% { transform: translate(0%, 0%) scale(1); }
-    25% { transform: translate(30%, -20%) scale(1.2); }
-    50% { transform: translate(-10%, 30%) scale(0.9); }
-    75% { transform: translate(-30%, -10%) scale(1.1); }
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(20%, -15%, 0) scale(1.1); }
   }
   @keyframes blob2 {
-    0%, 100% { transform: translate(0%, 0%) scale(1); }
-    25% { transform: translate(-40%, 20%) scale(1.15); }
-    50% { transform: translate(20%, -30%) scale(1.05); }
-    75% { transform: translate(10%, 25%) scale(0.95); }
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-25%, 15%, 0) scale(1.08); }
   }
   @keyframes blob3 {
-    0%, 100% { transform: translate(0%, 0%) scale(1.1); }
-    25% { transform: translate(20%, 30%) scale(0.9); }
-    50% { transform: translate(-30%, -20%) scale(1.2); }
-    75% { transform: translate(25%, -15%) scale(1); }
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+    50% { transform: translate3d(15%, -20%, 0) scale(0.95); }
   }
   @keyframes blob4 {
-    0%, 100% { transform: translate(0%, 0%) scale(1); }
-    33% { transform: translate(-25%, 15%) scale(1.15); }
-    66% { transform: translate(15%, -25%) scale(0.85); }
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-18%, 12%, 0) scale(1.1); }
   }
 
   .fluid-bg-container {
     background: #031525;
     position: relative;
+    /* Contain paint/layout so blobs don't cause full-page repaints */
+    contain: layout style;
   }
 
   .fluid-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.85;
+    filter: blur(50px);
+    opacity: 0.75;
+    /* Use transform for GPU compositing; avoid will-change on too many elements */
     will-change: transform;
+    transform: translate3d(0, 0, 0);
+    /* Prevent blob from affecting layout of siblings */
+    contain: strict;
+    pointer-events: none;
   }
 
   .glass-hero {
     background: rgba(11, 25, 44, 0.15);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .glass-navbar {
     background: rgba(11, 25, 44, 0.3);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
   
   .glass-card {
     background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
   }
 
   .glass-card-dark {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
   }
@@ -119,6 +121,7 @@
       radial-gradient(ellipse 60% 50% at 85% 15%, rgba(14, 116, 144, 0.15) 0%, transparent 70%),
       linear-gradient(180deg, #0B192C 0%, #0f2238 50%, #0B192C 100%);
   }
+
   /* RTL Support */
   [dir="rtl"] .glass-navbar {
     direction: rtl;
@@ -136,5 +139,23 @@
   [dir="rtl"] label {
     font-family: "Cairo", sans-serif;
   }
-}
 
+  /* ── Reduced motion: respect user preferences ──
+     Pauses all blob animations & transitions for users who prefer reduced motion.
+     The visual appearance (gradients, glass, colors) is fully preserved. */
+  @media (prefers-reduced-motion: reduce) {
+    .fluid-blob {
+      animation: none !important;
+    }
+    
+    html {
+      scroll-behavior: auto;
+    }
+    
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

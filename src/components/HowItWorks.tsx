@@ -2,6 +2,11 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { useI18n } from '../i18n';
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export function HowItWorks() {
   const { t } = useI18n();
 
@@ -24,10 +29,11 @@ export function HowItWorks() {
           {t.howItWorks.steps.map((item, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.35, delay: idx * 0.08 }}
               className="relative flex flex-col items-center text-center"
             >
               <div className="w-16 h-16 rounded-full bg-brand-navy border-2 border-brand-yellow flex items-center justify-center text-xl font-bold text-brand-yellow z-10 shadow-[0_0_0_8px_var(--navy)]">

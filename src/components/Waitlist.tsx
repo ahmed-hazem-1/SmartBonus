@@ -61,7 +61,7 @@ export function Waitlist() {
   return (
     <section id="waitlist" className="py-24 relative overflow-hidden min-h-screen flex items-center gradient-light">
       {/* Subtle background blob for glass effect */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-yellow/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-yellow/5 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="glass-card rounded-[2rem] p-10 md:p-16 flex flex-col items-center text-center">
