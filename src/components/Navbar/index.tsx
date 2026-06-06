@@ -17,10 +17,12 @@ const LANG_OPTIONS: { value: Locale; label: string; native: string }[] = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [mobileLangOpen, setMobileLangOpen] = useState(false);
   const { displayText, showCursor, currentItem } = useTypewriter();
   const { isDark } = useSectionTheme();
   const { locale, setLocale, t, isRTL } = useI18n();
   const langDropdownRef = useRef<HTMLDivElement>(null);
+  const mobileLangDropdownRef = useRef<HTMLDivElement>(null);
 
   const questionClass = isDark
     ? 'text-brand-yellow font-bold'
@@ -30,11 +32,14 @@ export function Navbar() {
     ? (isDark ? 'bg-brand-yellow' : 'bg-brand-navy')
     : 'bg-white';
 
-  // Close lang dropdown on outside click
+  // Close lang dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (langDropdownRef.current && !langDropdownRef.current.contains(e.target as Node)) {
         setLangOpen(false);
+      }
+      if (mobileLangDropdownRef.current && !mobileLangDropdownRef.current.contains(e.target as Node)) {
+        setMobileLangOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -42,6 +47,11 @@ export function Navbar() {
   }, []);
 
   const currentLang = LANG_OPTIONS.find(l => l.value === locale)!;
+
+  const triggerScroll = (targetId: string) => {
+    const id = targetId.startsWith('#') ? targetId.substring(1) : targetId;
+    window.dispatchEvent(new CustomEvent('scrollToSection', { detail: { id } }));
+  };
 
   return (
     <div className="fixed top-4 left-0 right-0 z-50 px-4">
@@ -55,8 +65,8 @@ export function Navbar() {
 
             {/* Typewriter Brand / Question */}
             <div
-              className="cursor-pointer min-w-[180px] flex items-center"
-              onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
+              className="cursor-pointer min-w-[130px] sm:min-w-[180px] flex items-center"
+              onClick={() => triggerScroll('hero')}
             >
               <span
                 className={`font-bold tracking-tight whitespace-nowrap ${
@@ -82,7 +92,7 @@ export function Navbar() {
                   className="text-white/80 hover:text-brand-yellow transition-colors text-sm font-medium"
                   onClick={(e) => {
                     e.preventDefault();
-                    document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                    triggerScroll(item.href);
                   }}
                 >
                   {t.navbar.menu[item.key]}
@@ -118,14 +128,12 @@ export function Navbar() {
                         <button
                           key={opt.value}
                           onClick={() => { setLocale(opt.value); setLangOpen(false); }}
-                          className={`w-full px-4 py-3 text-sm font-medium flex items-center gap-3 transition-all duration-150 ${
+                          className={`w-full px-4 py-3 text-sm font-medium flex items-center justify-center text-center transition-all duration-150 ${
                             locale === opt.value
                               ? 'bg-brand-yellow text-brand-navy'
                               : 'text-white/80 hover:bg-white/5 hover:text-white'
                           }`}
-                          style={{ textAlign: isRTL ? 'right' : 'left' }}
                         >
-                          <span className="font-bold w-10 text-xs">{opt.label}</span>
                           <span>{opt.native}</span>
                         </button>
                       ))}
@@ -137,14 +145,57 @@ export function Navbar() {
               <Button
                 size="sm"
                 className="!bg-brand-yellow !text-white hover:!bg-yellow-600 border-none"
-                onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => triggerScroll('waitlist')}
               >
                 {t.navbar.cta}
               </Button>
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="flex md:hidden items-center">
+            {/* Mobile Actions: Language Dropdown + Menu Button */}
+            <div className="flex md:hidden items-center gap-3">
+              {/* Language Switcher — Mobile Outer */}
+              <div ref={mobileLangDropdownRef} className="relative">
+                <button
+                  onClick={() => setMobileLangOpen(o => !o)}
+                  className="flex items-center gap-1 text-white/85 hover:text-brand-yellow transition-colors text-xs font-bold focus:outline-none py-1.5 px-2.5 rounded-full bg-white/5 border border-white/10"
+                >
+                  <Globe className="w-3.5 h-3.5" />
+                  <span>{currentLang.label}</span>
+                  <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${mobileLangOpen ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {mobileLangOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                      transition={{ duration: 0.15 }}
+                      className={`absolute top-full mt-2 ${isRTL ? 'left-0' : 'right-0'} min-w-[160px] rounded-2xl overflow-hidden z-[100]`}
+                      style={{
+                        background: 'rgba(11,25,44,0.97)',
+                        backdropFilter: 'blur(20px)',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        boxShadow: '0 16px 48px rgba(0,0,0,0.4)',
+                      }}
+                    >
+                      {LANG_OPTIONS.map((opt) => (
+                        <button
+                          key={opt.value}
+                          onClick={() => { setLocale(opt.value); setMobileLangOpen(false); }}
+                          className={`w-full px-4 py-3 text-xs font-bold flex items-center justify-center text-center transition-all duration-150 ${
+                            locale === opt.value
+                              ? 'bg-brand-yellow text-brand-navy'
+                              : 'text-white/80 hover:bg-white/5 hover:text-white'
+                          }`}
+                        >
+                          <span>{opt.native}</span>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-white hover:text-brand-yellow focus:outline-none transition-colors"
@@ -174,41 +225,23 @@ export function Navbar() {
                     onClick={(e) => {
                       e.preventDefault();
                       setIsOpen(false);
-                      document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                      setTimeout(() => {
+                        triggerScroll(item.href);
+                      }, 50);
                     }}
                   >
                     {t.navbar.menu[item.key]}
                   </a>
                 ))}
 
-                {/* Language Switcher — Mobile */}
-                <div className="border-t border-white/10 pt-4">
-                  <p className="text-white/40 text-xs mb-2 flex items-center gap-1">
-                    <Globe className="w-3 h-3" /> Language
-                  </p>
-                  <div className="flex gap-2 flex-wrap">
-                    {LANG_OPTIONS.map((opt) => (
-                      <button
-                        key={opt.value}
-                        onClick={() => setLocale(opt.value)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-150 ${
-                          locale === opt.value
-                            ? 'bg-brand-yellow text-brand-navy'
-                            : 'bg-white/10 text-white/70 hover:bg-white/20'
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
                 <Button
                   size="sm"
                   className="!bg-brand-yellow !text-white hover:!bg-yellow-600 border-none w-full mt-2"
                   onClick={() => {
                     setIsOpen(false);
-                    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+                    setTimeout(() => {
+                      triggerScroll('waitlist');
+                    }, 50);
                   }}
                 >
                   {t.navbar.cta}

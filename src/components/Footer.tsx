@@ -21,17 +21,17 @@ export function Footer() {
         
         <div className="flex flex-wrap justify-center gap-6 md:gap-12 mb-12">
           <a href="#features" className="text-brand-gray hover:text-brand-navy transition-colors text-sm font-medium"
-            onClick={e => { e.preventDefault(); document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }); }}
+            onClick={e => { e.preventDefault(); window.dispatchEvent(new CustomEvent('scrollToSection', { detail: { id: 'features' } })); }}
           >
             {t.footer.links.features}
           </a>
           <a href="#how-it-works" className="text-brand-gray hover:text-brand-navy transition-colors text-sm font-medium"
-            onClick={e => { e.preventDefault(); document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' }); }}
+            onClick={e => { e.preventDefault(); window.dispatchEvent(new CustomEvent('scrollToSection', { detail: { id: 'how-it-works' } })); }}
           >
             {t.footer.links.howItWorks}
           </a>
           <a href="#waitlist" className="text-brand-gray hover:text-brand-navy transition-colors text-sm font-medium"
-            onClick={e => { e.preventDefault(); document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' }); }}
+            onClick={e => { e.preventDefault(); window.dispatchEvent(new CustomEvent('scrollToSection', { detail: { id: 'waitlist' } })); }}
           >
             {t.footer.links.waitlist}
           </a>

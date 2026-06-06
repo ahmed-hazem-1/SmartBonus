@@ -201,16 +201,28 @@ function useSectionScroll() {
       if (el) observer.observe(el);
     });
 
+    const handleCustomScroll = (e: Event) => {
+      const customEvent = e as CustomEvent<{ id: string }>;
+      const id = customEvent.detail.id;
+      const index = sections.indexOf(id);
+      if (index !== -1) {
+        currentIndex.current = index;
+        scrollToSection(id);
+      }
+    };
+
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('scrollToSection' as any, handleCustomScroll);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('scrollToSection' as any, handleCustomScroll);
       observer.disconnect();
     };
   }, []);

@@ -126,9 +126,9 @@ export function PhoneMockup() {
                 </div>
                 {/* WiFi */}
                 <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
-                  <path d="M6 7.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="white"/>
-                  <path d="M3.5 5.5C4.2 4.8 5 4.5 6 4.5s1.8.3 2.5 1" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
-                  <path d="M1.5 3.5C2.8 2.2 4.3 1.5 6 1.5s3.2.7 4.5 2" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                  <path d="M6 7.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="white" />
+                  <path d="M3.5 5.5C4.2 4.8 5 4.5 6 4.5s1.8.3 2.5 1" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none" />
+                  <path d="M1.5 3.5C2.8 2.2 4.3 1.5 6 1.5s3.2.7 4.5 2" stroke="white" strokeWidth="1.2" strokeLinecap="round" fill="none" />
                 </svg>
                 {/* Battery */}
                 <div className="flex items-center gap-[1px]">
@@ -223,16 +223,15 @@ export function PhoneMockup() {
 
       {/* ── Dot indicators ── */}
       {screens.length > 1 && (
-        <div className="flex gap-2">
+        <div className="hidden lg:flex gap-2">
           {screens.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentIndex(i)}
-              className={`transition-all duration-300 rounded-full ${
-                i === currentIndex
+              className={`transition-all duration-300 rounded-full ${i === currentIndex
                   ? 'w-6 h-2 bg-amber-400'
                   : 'w-2 h-2 bg-white/20 hover:bg-white/40'
-              }`}
+                }`}
             />
           ))}
         </div>
