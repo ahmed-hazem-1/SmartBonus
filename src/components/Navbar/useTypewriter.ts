@@ -1,12 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
-import { brandCycle, TYPE_SPEED, ERASE_SPEED, MS_PER_CHAR, MIN_DISPLAY } from './constants';
+import { useI18n } from '../../i18n';
+import { TYPE_SPEED, ERASE_SPEED, MS_PER_CHAR, MIN_DISPLAY } from './constants';
 
 /**
  * Drives the typewriter animation for the navbar brand/question cycle.
+ * Uses the current locale's brandCycle from i18n translations.
  * Returns the currently visible partial text, the active cycle item,
  * and a blinking cursor visibility flag.
  */
 export function useTypewriter() {
+  const { t } = useI18n();
+  const brandCycle = t.navbar.brandCycle;
+
   const [cycleIndex, setCycleIndex]   = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [showCursor, setShowCursor]   = useState(true);
@@ -24,10 +29,16 @@ export function useTypewriter() {
     return () => clearInterval(cur);
   }, []);
 
-  // Typewriter engine — reruns whenever cycleIndex changes
+  // Reset cycle index when language changes
+  useEffect(() => {
+    setCycleIndex(0);
+    setDisplayText('');
+  }, [t]);
+
+  // Typewriter engine — reruns whenever cycleIndex or brandCycle changes
   useEffect(() => {
     clearTimers();
-    const target = brandCycle[cycleIndex].text;
+    const target = brandCycle[cycleIndex]?.text ?? '';
     let charIndex = 0;
 
     setDisplayText('');
@@ -60,11 +71,11 @@ export function useTypewriter() {
     }, TYPE_SPEED);
 
     return clearTimers;
-  }, [cycleIndex]);
+  }, [cycleIndex, brandCycle]);
 
   return {
     displayText,
     showCursor,
-    currentItem: brandCycle[cycleIndex],
+    currentItem: brandCycle[cycleIndex] ?? { text: '', isQuestion: false },
   };
 }

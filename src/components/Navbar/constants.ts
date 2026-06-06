@@ -1,19 +1,9 @@
-// Data and configuration for the Navbar brand typewriter
-
-export const brandCycle = [
-  { text: 'Smart Bonus', isQuestion: false },
-  { text: 'Tired of stock shortages?', isQuestion: true },
-  { text: 'Smart Bonus', isQuestion: false },
-  { text: 'Paying too much per item?', isQuestion: true },
-  { text: 'Smart Bonus', isQuestion: false },
-  { text: 'Find better suppliers?', isQuestion: true },
-];
-
+// Navigation menu structure — labels come from i18n translations
 export const menuItems = [
-  { label: 'Home', href: '#hero' },
-  { label: 'Partner', href: '#partner' },
-  { label: 'Features', href: '#features' },
-  { label: 'How it works', href: '#how-it-works' },
+  { key: 'home' as const, href: '#hero' },
+  { key: 'partner' as const, href: '#partner' },
+  { key: 'features' as const, href: '#features' },
+  { key: 'howItWorks' as const, href: '#how-it-works' },
 ];
 
 // Sections with a dark background (used to invert question text color)

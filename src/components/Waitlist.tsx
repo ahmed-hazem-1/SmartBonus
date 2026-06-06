@@ -1,24 +1,30 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/Button';
 import { ChevronDown } from 'lucide-react';
+import { useI18n } from '../i18n';
 
 // ⚠️ REPLACE THIS with your deployed Google Apps Script Web App URL
-// Follow the setup guide in the artifacts to get this URL
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2fTaQwOPTonn-gGyTMCH1rzADQPF0J5iXXUFCLb5zY3tA6qFxLLarxUVHwP4vJm0r/exec';
 
 export function Waitlist() {
+  const { t } = useI18n();
+
   const [formData, setFormData] = useState({
     businessName: '',
     phone: '',
     city: '',
-    activity: 'Pharmacy'
+    activity: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const activityOptions = ['Pharmacy', 'Clinic', 'Supplier'];
+
+  // Reset default activity when locale changes
+  useEffect(() => {
+    setFormData(prev => ({ ...prev, activity: t.waitlist.activityOptions[0] }));
+  }, [t]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -40,18 +46,13 @@ export function Waitlist() {
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
-      // With no-cors mode, we can't read the response, but if fetch
-      // didn't throw, the request was sent successfully
       setIsSubmitted(true);
     } catch (err) {
       console.error('Waitlist submission error:', err);
-      setError('Something went wrong. Please try again.');
+      setError(t.waitlist.errorMsg);
     } finally {
       setIsSubmitting(false);
     }
@@ -60,7 +61,7 @@ export function Waitlist() {
   return (
     <section id="waitlist" className="py-24 relative overflow-hidden min-h-screen flex items-center gradient-light">
       {/* Subtle background blob for glass effect */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-yellow/5 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-yellow/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="glass-card rounded-[2rem] p-10 md:p-16 flex flex-col items-center text-center">
@@ -72,18 +73,18 @@ export function Waitlist() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-brand-navy mb-2">You're on the list!</h3>
-              <p className="text-brand-gray max-w-md mx-auto">Thank you for your interest. We will contact you soon with early access details.</p>
+              <h3 className="text-2xl font-bold text-brand-navy mb-2">{t.waitlist.successTitle}</h3>
+              <p className="text-brand-gray max-w-md mx-auto">{t.waitlist.successBody}</p>
             </div>
           ) : (
             <>
               <div className="mb-10 max-w-2xl">
                 <h2 className="text-3xl md:text-4xl font-bold text-brand-navy mb-4">
-                  Be One of the First Onboarded
+                  {t.waitlist.title}
                 </h2>
-                <div className="w-24 h-1 bg-brand-yellow/50 mx-auto rounded-full mb-6"></div>
+                <div className="w-24 h-1 bg-brand-yellow/50 mx-auto rounded-full mb-6" />
                 <p className="text-brand-gray text-lg">
-                  Register your interest now to secure early access and priority setup for your business.
+                  {t.waitlist.subtitle}
                 </p>
               </div>
 
@@ -92,7 +93,7 @@ export function Waitlist() {
                   <input
                     required
                     type="text"
-                    placeholder="Pharmacy / Business Name"
+                    placeholder={t.waitlist.fields.businessName}
                     className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
                     value={formData.businessName}
                     onChange={e => setFormData({ ...formData, businessName: e.target.value })}
@@ -100,7 +101,7 @@ export function Waitlist() {
                   <input
                     required
                     type="tel"
-                    placeholder="Phone Number"
+                    placeholder={t.waitlist.fields.phone}
                     className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
                     value={formData.phone}
                     onChange={e => setFormData({ ...formData, phone: e.target.value })}
@@ -111,7 +112,7 @@ export function Waitlist() {
                   <input
                     required
                     type="text"
-                    placeholder="City / location"
+                    placeholder={t.waitlist.fields.city}
                     className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
                     value={formData.city}
                     onChange={e => setFormData({ ...formData, city: e.target.value })}
@@ -119,19 +120,17 @@ export function Waitlist() {
 
                   {/* Custom dropdown */}
                   <div ref={dropdownRef} className="relative w-full">
-                    {/* Trigger */}
                     <button
                       type="button"
-                      onClick={() => setDropdownOpen((o) => !o)}
+                      onClick={() => setDropdownOpen(o => !o)}
                       className="w-full px-5 py-4 rounded-full border border-white/40 bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm flex items-center justify-between gap-2 focus:outline-none focus:ring-2 focus:ring-brand-yellow transition-all"
                     >
-                      <span className="font-medium">{formData.activity}</span>
+                      <span className="font-medium">{formData.activity || t.waitlist.fields.activity}</span>
                       <ChevronDown
                         className={`w-4 h-4 text-brand-navy/60 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}
                       />
                     </button>
 
-                    {/* Dropdown panel */}
                     {dropdownOpen && (
                       <div
                         className="absolute z-50 mt-2 w-full rounded-2xl overflow-hidden"
@@ -142,7 +141,7 @@ export function Waitlist() {
                           boxShadow: '0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(217,119,6,0.15)',
                         }}
                       >
-                        {activityOptions.map((opt) => (
+                        {t.waitlist.activityOptions.map((opt) => (
                           <button
                             key={opt}
                             type="button"
@@ -150,10 +149,11 @@ export function Waitlist() {
                               setFormData({ ...formData, activity: opt });
                               setDropdownOpen(false);
                             }}
-                            className={`w-full text-left px-5 py-3.5 text-sm font-bold transition-all duration-150 ${formData.activity === opt
+                            className={`w-full text-left px-5 py-3.5 text-sm font-bold transition-all duration-150 ${
+                              formData.activity === opt
                                 ? 'bg-brand-yellow text-brand-navy'
                                 : 'text-white/80 hover:bg-white/5 hover:text-white'
-                              }`}
+                            }`}
                           >
                             {opt}
                           </button>
@@ -174,10 +174,10 @@ export function Waitlist() {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                         </svg>
-                        Submitting...
+                        {t.waitlist.submitting}
                       </span>
                     ) : (
-                      'Join Waitlist'
+                      t.waitlist.button
                     )}
                   </Button>
                 </div>

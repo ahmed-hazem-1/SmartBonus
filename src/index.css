@@ -119,5 +119,22 @@
       radial-gradient(ellipse 60% 50% at 85% 15%, rgba(14, 116, 144, 0.15) 0%, transparent 70%),
       linear-gradient(180deg, #0B192C 0%, #0f2238 50%, #0B192C 100%);
   }
+  /* RTL Support */
+  [dir="rtl"] .glass-navbar {
+    direction: rtl;
+  }
+
+  /* Ensure all text renders with proper direction in RTL */
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] p,
+  [dir="rtl"] span,
+  [dir="rtl"] a,
+  [dir="rtl"] button,
+  [dir="rtl"] input,
+  [dir="rtl"] label {
+    font-family: "Cairo", sans-serif;
+  }
 }
 

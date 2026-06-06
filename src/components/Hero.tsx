@@ -1,10 +1,11 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Button } from './ui/Button';
-import { ArrowRight, Play, LayoutDashboard } from 'lucide-react';
 import { PhoneMockup } from './PhoneMockup';
+import { useI18n } from '../i18n';
 
 export function Hero() {
+  const { t } = useI18n();
+
   return (
     <section id="hero" className="relative min-h-screen flex flex-col justify-end pb-16 pt-20 overflow-hidden fluid-bg-container">
       {/* Fluid marble blobs */}
@@ -27,16 +28,42 @@ export function Hero() {
             transition={{ duration: 0.5 }}
             className="flex flex-col space-y-8 self-end"
           >
-            <div className="space-y-4">
+            <div className="space-y-6">
+              {/* Badge */}
               <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 text-white text-sm font-medium border border-white/20 backdrop-blur-sm">
-                Powered by Al Farouk Group
+                {t.hero.badge}
               </span>
+
+              {/* Main headline */}
               <h1 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
-                Smart Procurement for <span className="text-brand-yellow drop-shadow-lg">Pharmacies & Clinics</span>
+                {t.hero.title}
               </h1>
-              <p className="text-lg text-white/90 max-w-xl leading-relaxed font-medium">
-                Discover better prices, analyze shortages, and make faster purchasing decisions with an AI-assisted B2B sourcing platform built for healthcare businesses.
-              </p>
+
+              {/* Pain-point questions */}
+              <div className="space-y-3">
+                {t.hero.painPoints.map((point, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <span className="text-brand-yellow text-lg mt-0.5 shrink-0">•</span>
+                    <p className="text-white/85 text-base leading-relaxed font-medium">{point}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Emotional divider */}
+              <div className="border-t border-white/20 pt-4 space-y-1">
+                <p className="text-white/70 text-sm italic">{t.hero.divider}</p>
+                <p className="text-brand-yellow font-semibold text-base">{t.hero.story}</p>
+              </div>
+
+              {/* CTA */}
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.02 }}
+                onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-yellow text-white font-bold text-base shadow-lg hover:bg-yellow-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2"
+              >
+                {t.hero.cta}
+              </motion.button>
             </div>
           </motion.div>
 
@@ -48,28 +75,6 @@ export function Hero() {
           >
             {/* Mobile App Mockup Carousel */}
             <PhoneMockup />
-
-            {/* Separated action and stats div */}
-            <div className="flex flex-col space-y-6">
-              <div className="flex flex-col sm:flex-row gap-4">
-                {/* <Button size="lg" className="group bg-brand-yellow hover:bg-yellow-600 text-white border-none shadow-lg w-full sm:w-auto" onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}>
-                  Reserve Early Access
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button> */}
-              </div>
-{/*               
-              <div className="pt-6 border-t border-white/20 flex items-center gap-6">
-                <div className="flex flex-col">
-                  <span className="text-2xl font-bold text-white drop-shadow-md">100+</span>
-                  <span className="text-sm text-white/80">Pharmacies Ready</span>
-                </div>
-                <div className="w-px h-10 bg-white/20"></div>
-                <div className="flex flex-col">
-                  <span className="text-2xl font-bold text-white drop-shadow-md">Fast</span>
-                  <span className="text-sm text-white/80">Supplier Discovery</span>
-                </div>
-              </div> */}
-            </div>
           </motion.div>
 
         </div>
