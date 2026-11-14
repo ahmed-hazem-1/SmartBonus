@@ -36,6 +36,8 @@ export const en = {
     ],
     divider: 'These are not just operational challenges — they are profits quietly slipping away.',
     story: 'And this is where Smart Bonus begins.',
+    arrowLabel: 'See Smart Bonus in 60 seconds',
+    chips: ['3 ready offers in a second', 'Instant alternative for shortages', 'Turn slow stock into profit'],
     video: {
       label: 'Smart Bonus explainer video',
       soundOn: 'Turn sound on',

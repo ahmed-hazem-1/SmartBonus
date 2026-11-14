@@ -17,7 +17,7 @@ export default function App() {
   useSectionNavigation();
 
   return (
-    <div className="min-h-screen bg-white selection:bg-brand-yellow/30 selection:text-brand-navy">
+    <div className="min-h-screen bg-white selection:bg-brand-accent/30 selection:text-brand-navy">
       <Navbar />
       <main>
         <Hero />

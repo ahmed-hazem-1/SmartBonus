@@ -21,7 +21,7 @@ export function Download() {
       >
         <div className="gradient-navy rounded-[2rem] p-6 sm:p-10 md:p-16 text-white text-center flex flex-col items-center shadow-xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">{t.download.title}</h2>
-          <div className="w-24 h-1 bg-brand-yellow/60 mx-auto rounded-full mb-6" />
+          <div className="w-24 h-1 bg-brand-accent/60 mx-auto rounded-full mb-6" />
           <p className="text-gray-300 text-lg max-w-xl mb-10">{t.download.subtitle}</p>
 
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-6">
@@ -29,7 +29,7 @@ export function Download() {
               href={PLAY_STORE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block rounded-xl transition-transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-brand-yellow"
+              className="inline-block rounded-xl transition-transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-brand-accent"
             >
               <img
                 src={isEn ? BADGE_EN : BADGE_AR}

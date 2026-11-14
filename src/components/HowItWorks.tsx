@@ -36,7 +36,7 @@ export function HowItWorks() {
               transition={{ duration: 0.35, delay: idx * 0.08 }}
               className="relative flex flex-col items-center text-center"
             >
-              <div className="w-16 h-16 rounded-full bg-brand-navy border-2 border-brand-yellow flex items-center justify-center text-xl font-bold text-brand-yellow z-10 shadow-[0_0_0_8px_var(--navy)]">
+              <div className="w-16 h-16 rounded-full bg-brand-navy border-2 border-brand-accent flex items-center justify-center text-xl font-bold text-brand-accent-soft z-10 shadow-[0_0_0_8px_var(--navy)]">
                 {item.step}
               </div>
               <h3 className="text-xl font-bold mt-8 mb-4">

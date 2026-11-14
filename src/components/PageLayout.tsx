@@ -18,16 +18,16 @@ export function PageLayout({ title, subtitle, meta, updated, children }: PageLay
   const isEnglish = locale === 'en';
 
   const langBtn = (active: boolean) =>
-    `px-1 transition-colors ${active ? 'text-brand-yellow font-bold' : 'text-white/70 hover:text-white'}`;
+    `px-1 transition-colors ${active ? 'text-brand-accent-soft font-bold' : 'text-white/70 hover:text-white'}`;
 
   return (
-    <div className="min-h-screen bg-white selection:bg-brand-yellow/30 selection:text-brand-navy">
+    <div className="min-h-screen bg-white selection:bg-brand-accent/30 selection:text-brand-navy">
       <Navbar />
       <main>
         <header className="gradient-navy text-white pt-32 pb-20 px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-start">
             <div className="flex items-center justify-between gap-4 mb-8 text-sm">
-              <a href="/" className="text-white/70 hover:text-brand-yellow transition-colors">
+              <a href="/" className="text-white/70 hover:text-brand-accent-soft transition-colors">
                 {t.pages.backHome}
               </a>
               <div className="flex items-center gap-1" role="group" aria-label="Language">
@@ -45,7 +45,7 @@ export function PageLayout({ title, subtitle, meta, updated, children }: PageLay
             {subtitle && <p className="text-white/80 text-lg max-w-2xl leading-relaxed">{subtitle}</p>}
             {meta && <div className="text-white/70 text-sm mt-4">{meta}</div>}
             {updated && (
-              <p className="text-sm text-brand-yellow mt-4">
+              <p className="text-sm text-brand-accent-soft mt-4">
                 {t.pages.lastUpdated}: {updated}
               </p>
             )}

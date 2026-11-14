@@ -59,7 +59,7 @@ export function Waitlist() {
   return (
     <section id="waitlist" className="py-24 relative overflow-hidden min-h-screen flex items-center gradient-light">
       {/* Subtle background blob for glass effect */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-yellow/5 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-accent/5 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="glass-card rounded-[2rem] p-10 md:p-16 flex flex-col items-center text-center">
@@ -80,7 +80,7 @@ export function Waitlist() {
                 <h2 className="text-3xl md:text-4xl font-bold text-brand-navy mb-4">
                   {t.waitlist.title}
                 </h2>
-                <div className="w-24 h-1 bg-brand-yellow/50 mx-auto rounded-full mb-6" />
+                <div className="w-24 h-1 bg-brand-accent/50 mx-auto rounded-full mb-6" />
                 <p className="text-brand-gray text-lg">
                   {t.waitlist.subtitle}
                 </p>
@@ -92,7 +92,7 @@ export function Waitlist() {
                     required
                     type="text"
                     placeholder={t.waitlist.fields.businessName}
-                    className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
+                    className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
                     value={formData.businessName}
                     onChange={e => setFormData({ ...formData, businessName: e.target.value })}
                   />
@@ -100,7 +100,7 @@ export function Waitlist() {
                     required
                     type="tel"
                     placeholder={t.waitlist.fields.phone}
-                    className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
+                    className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
                     value={formData.phone}
                     onChange={e => setFormData({ ...formData, phone: e.target.value })}
                   />
@@ -111,7 +111,7 @@ export function Waitlist() {
                     required
                     type="text"
                     placeholder={t.waitlist.fields.city}
-                    className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
+                    className="w-full px-5 py-4 rounded-full border border-white/40 focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent transition-all bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm"
                     value={formData.city}
                     onChange={e => setFormData({ ...formData, city: e.target.value })}
                   />
@@ -121,7 +121,7 @@ export function Waitlist() {
                     <button
                       type="button"
                       onClick={() => setDropdownOpen(o => !o)}
-                      className="w-full px-5 py-4 rounded-full border border-white/40 bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm flex items-center justify-between gap-2 focus:outline-none focus:ring-2 focus:ring-brand-yellow transition-all"
+                      className="w-full px-5 py-4 rounded-full border border-white/40 bg-white/60 backdrop-blur-sm text-brand-navy shadow-sm flex items-center justify-between gap-2 focus:outline-none focus:ring-2 focus:ring-brand-accent transition-all"
                     >
                       <span className="font-medium">{formData.activity || t.waitlist.fields.activity}</span>
                       <ChevronDown
@@ -136,7 +136,7 @@ export function Waitlist() {
                           background: 'rgba(11,25,44,0.96)',
                           backdropFilter: 'blur(20px)',
                           border: '1px solid rgba(255,255,255,0.08)',
-                          boxShadow: '0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(217,119,6,0.15)',
+                          boxShadow: '0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(109,58,240,0.15)',
                         }}
                       >
                         {t.waitlist.activityOptions.map((opt) => (
@@ -149,7 +149,7 @@ export function Waitlist() {
                             }}
                             className={`w-full text-left px-5 py-3.5 text-sm font-bold transition-all duration-150 ${
                               formData.activity === opt
-                                ? 'bg-brand-yellow text-brand-navy'
+                                ? 'bg-brand-accent text-brand-navy'
                                 : 'text-white/80 hover:bg-white/5 hover:text-white'
                             }`}
                           >

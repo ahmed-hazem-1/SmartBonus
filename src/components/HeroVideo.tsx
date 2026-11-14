@@ -11,7 +11,13 @@ const POSTER_SRC = '/videos/smart-bonus-intro-poster.jpg';
  * with a sound toggle that restarts from the beginning the first time sound is turned on.
  * Respects prefers-reduced-motion: no autoplay, just the poster and a play button.
  */
-export function HeroVideo() {
+type HeroVideoProps = {
+  /** 'glass' = rounded glass frame; 'browser' = window frame with a URL bar */
+  frame?: 'glass' | 'browser';
+  className?: string;
+};
+
+export function HeroVideo({ frame = 'glass', className = 'max-w-2xl mx-auto lg:mx-0' }: HeroVideoProps) {
   const { t } = useI18n();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -69,15 +75,28 @@ export function HeroVideo() {
   };
 
   const btn =
-    'w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center bg-black/45 hover:bg-black/60 text-white border border-white/20 backdrop-blur-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow';
+    'w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center bg-black/45 hover:bg-black/60 text-white border border-white/20 backdrop-blur-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent';
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto lg:mx-0">
-      {/* Soft amber glow behind the frame */}
-      <div className="absolute -inset-3 rounded-[2rem] bg-brand-yellow/20 blur-2xl pointer-events-none" aria-hidden />
+    <div className={`relative w-full ${className}`}>
+      {/* Soft violet glow behind the frame */}
+      <div className="absolute -inset-3 rounded-[2rem] bg-brand-accent/30 blur-2xl pointer-events-none" aria-hidden />
 
-      <div className="relative rounded-[1.5rem] sm:rounded-[2rem] p-1.5 sm:p-2 bg-white/10 border border-white/20 shadow-2xl backdrop-blur-sm">
-        <div className="relative overflow-hidden rounded-[1.1rem] sm:rounded-[1.5rem] bg-[#0b0820] aspect-video">
+      <div className={`relative shadow-2xl backdrop-blur-sm border border-white/20 ${frame === 'browser' ? 'rounded-2xl sm:rounded-3xl bg-white/[0.08] p-1.5 sm:p-2 pt-0 sm:pt-0' : 'rounded-[1.5rem] sm:rounded-[2rem] bg-white/10 p-1.5 sm:p-2'}`}>
+        {frame === 'browser' && (
+          <div dir="ltr" className="flex items-center gap-3 h-9 sm:h-11 px-2 sm:px-3" aria-hidden>
+            <div className="flex gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+            </div>
+            <div className="flex-1 flex justify-center">
+              <span className="px-4 py-0.5 sm:py-1 rounded-full bg-white/10 text-white/70 text-[11px] sm:text-xs font-medium tracking-wide">smartbonus.store</span>
+            </div>
+            <div className="w-[42px]" />
+          </div>
+        )}
+        <div className={`relative overflow-hidden bg-[#0b0a2b] aspect-video ${frame === 'browser' ? 'rounded-xl sm:rounded-2xl' : 'rounded-[1.1rem] sm:rounded-[1.5rem]'}`}>
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover cursor-pointer"
@@ -99,7 +118,7 @@ export function HeroVideo() {
               type="button"
               onClick={togglePlay}
               aria-label={t.hero.video.play}
-              className="absolute inset-0 m-auto w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center bg-brand-yellow text-white shadow-xl hover:scale-105 transition-transform focus:outline-none focus-visible:ring-4 focus-visible:ring-white/60"
+              className="absolute inset-0 m-auto w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center bg-brand-accent text-white shadow-xl hover:scale-105 transition-transform focus:outline-none focus-visible:ring-4 focus-visible:ring-white/60"
             >
               <Play className="w-7 h-7 sm:w-8 sm:h-8 translate-x-0.5" fill="currentColor" aria-hidden />
             </button>
@@ -120,9 +139,9 @@ export function HeroVideo() {
               type="button"
               onClick={toggleSound}
               aria-label={muted ? t.hero.video.soundOn : t.hero.video.soundOff}
-              className={`pointer-events-auto h-10 sm:h-11 rounded-full flex items-center gap-2 px-4 text-sm font-semibold transition-colors border backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow ${
+              className={`pointer-events-auto h-10 sm:h-11 rounded-full flex items-center gap-2 px-4 text-sm font-semibold transition-colors border backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent ${
                 muted
-                  ? 'bg-brand-yellow text-white border-yellow-400/50 hover:bg-yellow-600'
+                  ? 'bg-brand-accent text-white border-brand-accent-soft/50 hover:bg-brand-accent-dark'
                   : 'bg-black/45 text-white border-white/20 hover:bg-black/60'
               }`}
             >

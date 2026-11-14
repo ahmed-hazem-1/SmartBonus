@@ -238,7 +238,7 @@ export function PhoneMockup() {
               key={i}
               onClick={() => setCurrentIndex(i)}
               className={`transition-all duration-300 rounded-full ${i === currentIndex
-                  ? 'w-6 h-2 bg-amber-400'
+                  ? 'w-6 h-2 bg-violet-400'
                   : 'w-2 h-2 bg-white/20 hover:bg-white/40'
                 }`}
             />

@@ -4,7 +4,10 @@
 @theme {
   --font-sans: "Cairo", ui-sans-serif, system-ui, sans-serif;
   --color-brand-navy: var(--navy);
-  --color-brand-yellow: var(--yellow);
+  --color-brand-accent: var(--accent);
+  --color-brand-accent-dark: var(--accent-dark);
+  --color-brand-accent-soft: var(--accent-soft);
+  --color-brand-teal: var(--teal);
   --color-brand-gray: var(--gray);
   
   --radius-xl: 1rem;
@@ -13,8 +16,11 @@
 
 @layer base {
   :root {
-    --navy: #0B192C; /* Deep modern navy */
-    --yellow: #D97706; /* Dark yellow / Amber */
+    --navy: #140C3D; /* Deep indigo (matches the explainer video) */
+    --accent: #6D3AF0; /* Brand violet — buttons, accents on light backgrounds */
+    --accent-dark: #5A27DB; /* Hover state */
+    --accent-soft: #A78BFA; /* Accent text/icons on dark backgrounds */
+    --teal: #2DD4BF; /* Secondary accent (gradient end) */
     --gray: #6B7280; /* Neutral quote/support text */
     --bg-color: #FFFFFF;
   }
@@ -35,6 +41,11 @@
   /* ── Fluid marble blob animations ──
      Optimized: fewer keyframe steps, using translate3d for GPU compositing,
      reduced blur from 80px → 50px for less paint cost */
+  @keyframes float {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -8px, 0); }
+  }
+
   @keyframes blob1 {
     0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
     50% { transform: translate3d(20%, -15%, 0) scale(1.1); }
@@ -53,7 +64,7 @@
   }
 
   .fluid-bg-container {
-    background: #031525;
+    background: #0B0A2B;
     position: relative;
     /* Contain paint/layout so blobs don't cause full-page repaints */
     contain: layout style;
@@ -73,19 +84,27 @@
   }
 
   .glass-hero {
-    background: rgba(11, 25, 44, 0.15);
+    background: rgba(11, 10, 43, 0.15);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
   }
 
   .glass-navbar {
-    background: rgba(11, 25, 44, 0.3);
+    background: rgba(11, 10, 43, 0.35);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
   
+  /* Violet → teal gradient text, as in the explainer video */
+  .text-gradient-brand {
+    background: linear-gradient(90deg, #A78BFA 0%, #7C5CFA 45%, #2DD4BF 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .glass-card {
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(10px);
@@ -105,17 +124,17 @@
   /* Subtle gradient for light sections */
   .gradient-light {
     background:
-      radial-gradient(ellipse 80% 60% at 10% 90%, rgba(217, 119, 6, 0.18) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 50% at 90% 20%, rgba(11, 25, 44, 0.25) 0%, transparent 70%),
-      linear-gradient(180deg, #f5f5f0 0%, #fafaf7 50%, #f5f5f0 100%);
+      radial-gradient(ellipse 80% 60% at 10% 90%, rgba(109, 58, 240, 0.16) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 90% 20%, rgba(45, 212, 191, 0.14) 0%, transparent 70%),
+      linear-gradient(180deg, #f6f5fb 0%, #fbfaff 50%, #f6f5fb 100%);
   }
 
   /* Subtle gradient for navy sections */
   .gradient-navy {
     background:
-      radial-gradient(ellipse 70% 60% at 20% 80%, rgba(217, 119, 6, 0.12) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 50% at 85% 15%, rgba(14, 116, 144, 0.15) 0%, transparent 70%),
-      linear-gradient(180deg, #0B192C 0%, #0f2238 50%, #0B192C 100%);
+      radial-gradient(ellipse 70% 60% at 20% 80%, rgba(109, 58, 240, 0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 85% 15%, rgba(45, 212, 191, 0.12) 0%, transparent 70%),
+      linear-gradient(180deg, #0B0A2B 0%, #150D44 50%, #0B0A2B 100%);
   }
 
   /* RTL Support */

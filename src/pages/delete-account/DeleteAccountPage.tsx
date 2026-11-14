@@ -9,7 +9,7 @@ import { GOOGLE_SCRIPT_URL, SUPPORT_EMAIL } from '../../config/contact';
 type RequestType = 'full' | 'partial';
 
 const inputClass =
-  'w-full px-5 py-3.5 rounded-full border border-gray-200 bg-gray-50 text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all text-start';
+  'w-full px-5 py-3.5 rounded-full border border-gray-200 bg-gray-50 text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent transition-all text-start';
 const labelClass = 'block text-sm font-semibold text-brand-navy mb-2 text-start';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -86,7 +86,7 @@ export function DeleteAccountPage() {
         <ol className="space-y-4">
           {doc.steps.map((step, i) => (
             <li key={i} className="flex items-start gap-4">
-              <span className="w-9 h-9 shrink-0 rounded-full bg-brand-navy text-brand-yellow font-bold flex items-center justify-center border-2 border-brand-yellow">
+              <span className="w-9 h-9 shrink-0 rounded-full bg-brand-navy text-brand-accent font-bold flex items-center justify-center border-2 border-brand-accent">
                 {i + 1}
               </span>
               <span className="pt-1.5">{step}</span>
@@ -103,7 +103,7 @@ export function DeleteAccountPage() {
           <ul className="space-y-3">
             {doc.kept.map((item, i) => (
               <li key={i} className="flex items-start gap-3">
-                <Info className="w-5 h-5 text-brand-yellow shrink-0 mt-0.5" aria-hidden />
+                <Info className="w-5 h-5 text-brand-accent shrink-0 mt-0.5" aria-hidden />
                 <span>{item}</span>
               </li>
             ))}
@@ -114,13 +114,13 @@ export function DeleteAccountPage() {
       <div className="grid md:grid-cols-2 gap-6">
         <ContentCard title={t.deleteAccount.timingTitle}>
           <p className="flex items-start gap-3">
-            <Clock className="w-5 h-5 text-brand-yellow shrink-0 mt-0.5" aria-hidden />
+            <Clock className="w-5 h-5 text-brand-accent shrink-0 mt-0.5" aria-hidden />
             <span>{doc.timing}</span>
           </p>
         </ContentCard>
         <ContentCard title={t.deleteAccount.partialTitle}>
           <p className="flex items-start gap-3">
-            <SlidersHorizontal className="w-5 h-5 text-brand-yellow shrink-0 mt-0.5" aria-hidden />
+            <SlidersHorizontal className="w-5 h-5 text-brand-accent shrink-0 mt-0.5" aria-hidden />
             <span>{doc.partial}</span>
           </p>
         </ContentCard>
@@ -140,7 +140,7 @@ export function DeleteAccountPage() {
           <>
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-brand-navy mb-2 flex items-center gap-3">
-                <Trash2 className="w-6 h-6 text-brand-yellow" aria-hidden />
+                <Trash2 className="w-6 h-6 text-brand-accent" aria-hidden />
                 {t.deleteAccount.formTitle}
               </h2>
               <p className="text-brand-gray">{t.deleteAccount.formSubtitle}</p>
@@ -197,7 +197,7 @@ export function DeleteAccountPage() {
                       key={opt.value}
                       className={`flex items-center gap-3 rounded-2xl border px-5 py-4 cursor-pointer transition-colors ${
                         form.requestType === opt.value
-                          ? 'border-brand-yellow bg-amber-50 text-brand-navy'
+                          ? 'border-brand-accent bg-violet-50 text-brand-navy'
                           : 'border-gray-200 bg-gray-50 text-brand-gray hover:border-gray-300'
                       }`}
                     >
@@ -207,7 +207,7 @@ export function DeleteAccountPage() {
                         value={opt.value}
                         checked={form.requestType === opt.value}
                         onChange={() => setForm({ ...form, requestType: opt.value })}
-                        className="accent-amber-600 w-4 h-4"
+                        className="accent-violet-600 w-4 h-4"
                       />
                       <span className="font-semibold">{opt.label}</span>
                     </label>
@@ -247,9 +247,9 @@ export function DeleteAccountPage() {
 
             {SUPPORT_EMAIL && (
               <p className="mt-8 text-sm text-brand-gray flex flex-wrap items-center gap-2">
-                <Mail className="w-4 h-4 text-brand-yellow" aria-hidden />
+                <Mail className="w-4 h-4 text-brand-accent" aria-hidden />
                 <span>{t.deleteAccount.orEmail}</span>
-                <a href={mailtoHref} className="font-semibold text-brand-navy hover:text-brand-yellow break-all" dir="ltr">
+                <a href={mailtoHref} className="font-semibold text-brand-navy hover:text-brand-accent break-all" dir="ltr">
                   {SUPPORT_EMAIL}
                 </a>
               </p>

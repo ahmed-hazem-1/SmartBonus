@@ -4,12 +4,12 @@ import { Search, Zap, ArrowRightLeft, Building2, Eye, TrendingUp } from 'lucide-
 import { useI18n } from '../i18n';
 
 const FEATURE_ICONS = [
-  <Search className="w-6 h-6 text-brand-yellow" />,
-  <Zap className="w-6 h-6 text-brand-yellow" />,
-  <ArrowRightLeft className="w-6 h-6 text-brand-yellow" />,
-  <Building2 className="w-6 h-6 text-brand-yellow" />,
-  <Eye className="w-6 h-6 text-brand-yellow" />,
-  <TrendingUp className="w-6 h-6 text-brand-yellow" />,
+  <Search className="w-6 h-6 text-brand-accent" />,
+  <Zap className="w-6 h-6 text-brand-accent" />,
+  <ArrowRightLeft className="w-6 h-6 text-brand-accent" />,
+  <Building2 className="w-6 h-6 text-brand-accent" />,
+  <Eye className="w-6 h-6 text-brand-accent" />,
+  <TrendingUp className="w-6 h-6 text-brand-accent" />,
 ];
 
 // Shared animation variant — defined once, avoids creating inline objects per render
@@ -29,7 +29,7 @@ export function Features() {
   return (
     <section id="features" className="py-24 relative overflow-hidden gradient-light">
       {/* Subtle background blobs — static, no animation needed here */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-brand-yellow/10 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-brand-accent/10 rounded-full blur-[80px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-navy/5 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">

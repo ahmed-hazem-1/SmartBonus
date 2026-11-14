@@ -25,11 +25,11 @@ export function Navbar() {
   const mobileLangDropdownRef = useRef<HTMLDivElement>(null);
 
   const questionClass = isDark
-    ? 'text-brand-yellow font-bold'
+    ? 'text-brand-accent-soft font-bold'
     : 'text-brand-navy font-bold';
 
   const cursorColor = currentItem.isQuestion
-    ? (isDark ? 'bg-brand-yellow' : 'bg-brand-navy')
+    ? (isDark ? 'bg-brand-accent-soft' : 'bg-brand-navy')
     : 'bg-white';
 
   // Close lang dropdowns on outside click
@@ -89,7 +89,7 @@ export function Navbar() {
                 <a
                   key={item.key}
                   href={item.href}
-                  className="text-white/80 hover:text-brand-yellow transition-colors text-sm font-medium"
+                  className="text-white/80 hover:text-brand-accent-soft transition-colors text-sm font-medium"
                   onClick={(e) => {
                     e.preventDefault();
                     triggerScroll(item.href);
@@ -103,7 +103,7 @@ export function Navbar() {
               <div ref={langDropdownRef} className="relative">
                 <button
                   onClick={() => setLangOpen(o => !o)}
-                  className="flex items-center gap-1.5 text-white/80 hover:text-brand-yellow transition-colors text-sm font-medium focus:outline-none"
+                  className="flex items-center gap-1.5 text-white/80 hover:text-brand-accent-soft transition-colors text-sm font-medium focus:outline-none"
                 >
                   <Globe className="w-4 h-4" />
                   <span>{currentLang.label}</span>
@@ -130,7 +130,7 @@ export function Navbar() {
                           onClick={() => { setLocale(opt.value); setLangOpen(false); }}
                           className={`w-full px-4 py-3 text-sm font-medium flex items-center justify-center text-center transition-all duration-150 ${
                             locale === opt.value
-                              ? 'bg-brand-yellow text-brand-navy'
+                              ? 'bg-brand-accent text-white'
                               : 'text-white/80 hover:bg-white/5 hover:text-white'
                           }`}
                         >
@@ -144,7 +144,7 @@ export function Navbar() {
 
               <Button
                 size="sm"
-                className="!bg-brand-yellow !text-white hover:!bg-yellow-600 border-none"
+                className="!bg-brand-accent !text-white hover:!bg-brand-accent-dark border-none"
                 onClick={() => triggerScroll('waitlist')}
               >
                 {t.navbar.cta}
@@ -157,7 +157,7 @@ export function Navbar() {
               <div ref={mobileLangDropdownRef} className="relative">
                 <button
                   onClick={() => setMobileLangOpen(o => !o)}
-                  className="flex items-center gap-1 text-white/85 hover:text-brand-yellow transition-colors text-xs font-bold focus:outline-none py-1.5 px-2.5 rounded-full bg-white/5 border border-white/10"
+                  className="flex items-center gap-1 text-white/85 hover:text-brand-accent-soft transition-colors text-xs font-bold focus:outline-none py-1.5 px-2.5 rounded-full bg-white/5 border border-white/10"
                 >
                   <Globe className="w-3.5 h-3.5" />
                   <span>{currentLang.label}</span>
@@ -184,7 +184,7 @@ export function Navbar() {
                           onClick={() => { setLocale(opt.value); setMobileLangOpen(false); }}
                           className={`w-full px-4 py-3 text-xs font-bold flex items-center justify-center text-center transition-all duration-150 ${
                             locale === opt.value
-                              ? 'bg-brand-yellow text-brand-navy'
+                              ? 'bg-brand-accent text-white'
                               : 'text-white/80 hover:bg-white/5 hover:text-white'
                           }`}
                         >
@@ -198,7 +198,7 @@ export function Navbar() {
 
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-white hover:text-brand-yellow focus:outline-none transition-colors"
+                className="text-white hover:text-brand-accent-soft focus:outline-none transition-colors"
               >
                 {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -221,7 +221,7 @@ export function Navbar() {
                   <a
                     key={item.key}
                     href={item.href}
-                    className="text-white/80 hover:text-brand-yellow transition-colors text-base font-medium py-1"
+                    className="text-white/80 hover:text-brand-accent-soft transition-colors text-base font-medium py-1"
                     onClick={(e) => {
                       e.preventDefault();
                       setIsOpen(false);
@@ -236,7 +236,7 @@ export function Navbar() {
 
                 <Button
                   size="sm"
-                  className="!bg-brand-yellow !text-white hover:!bg-yellow-600 border-none w-full mt-2"
+                  className="!bg-brand-accent !text-white hover:!bg-brand-accent-dark border-none w-full mt-2"
                   onClick={() => {
                     setIsOpen(false);
                     setTimeout(() => {
