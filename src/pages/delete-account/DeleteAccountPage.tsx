@@ -245,13 +245,15 @@ export function DeleteAccountPage() {
               </Button>
             </form>
 
-            <p className="mt-8 text-sm text-brand-gray flex flex-wrap items-center gap-2">
-              <Mail className="w-4 h-4 text-brand-yellow" aria-hidden />
-              <span>{t.deleteAccount.orEmail}</span>
-              <a href={mailtoHref} className="font-semibold text-brand-navy hover:text-brand-yellow break-all" dir="ltr">
-                {SUPPORT_EMAIL}
-              </a>
-            </p>
+            {SUPPORT_EMAIL && (
+              <p className="mt-8 text-sm text-brand-gray flex flex-wrap items-center gap-2">
+                <Mail className="w-4 h-4 text-brand-yellow" aria-hidden />
+                <span>{t.deleteAccount.orEmail}</span>
+                <a href={mailtoHref} className="font-semibold text-brand-navy hover:text-brand-yellow break-all" dir="ltr">
+                  {SUPPORT_EMAIL}
+                </a>
+              </p>
+            )}
           </>
         )}
       </section>

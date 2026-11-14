@@ -14,22 +14,22 @@ export function ContactPage() {
   return (
     <PageLayout title={t.contact.title} subtitle={t.contact.subtitle}>
       <div className="gradient-navy rounded-[2rem] p-4 sm:p-6 md:p-8 shadow-xl">
-        <div className="grid md:grid-cols-3 gap-4 md:gap-6">
-          <div className={cardClass}>
+        <div className="grid md:grid-flow-col md:auto-cols-fr gap-4 md:gap-6">
+          {SUPPORT_EMAIL && <div className={cardClass}>
             <div className={iconClass}><Mail className="w-5 h-5 text-brand-yellow" aria-hidden /></div>
             <h2 className="text-lg font-bold">{t.contact.emailTitle}</h2>
             <a href={`mailto:${SUPPORT_EMAIL}`} dir="ltr" className="text-white/90 hover:text-brand-yellow break-all text-start">
               {SUPPORT_EMAIL}
             </a>
-          </div>
+          </div>}
 
-          <div className={cardClass}>
+          {PHONE_DISPLAY && <div className={cardClass}>
             <div className={iconClass}><Phone className="w-5 h-5 text-brand-yellow" aria-hidden /></div>
             <h2 className="text-lg font-bold">{t.contact.phoneTitle}</h2>
             <a href={`tel:${PHONE_TEL}`} dir="ltr" className="text-white/90 hover:text-brand-yellow text-start">
               {PHONE_DISPLAY}
             </a>
-          </div>
+          </div>}
 
           <div className={cardClass}>
             <div className={iconClass}><MapPin className="w-5 h-5 text-brand-yellow" aria-hidden /></div>

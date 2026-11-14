@@ -1,12 +1,12 @@
 // Shared contact + integration constants. Single source of truth.
 
-// TODO replace: placeholder support mailbox
-export const SUPPORT_EMAIL = 'support@smartbonus.store';
+// Official support email. Leave '' until it exists: every email line on the site is hidden while empty.
+export const SUPPORT_EMAIL = '';
 
-// TODO replace: placeholder phone number ("[PHONE]")
-export const PHONE_DISPLAY = '+218 XX XXX XXXX';
-// Digits-only form used in tel: links. TODO replace with the real number.
-export const PHONE_TEL = '+218XXXXXXXXX';
+// Official phone. Leave '' until it exists: every phone line on the site is hidden while empty.
+export const PHONE_DISPLAY = '';
+// Digits-only form used in tel: links, e.g. '+218912345678'.
+export const PHONE_TEL = '';
 
 export const ADDRESS = {
   ar: 'بنغازي، ليبيا',

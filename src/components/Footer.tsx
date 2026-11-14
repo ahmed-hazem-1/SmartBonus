@@ -52,14 +52,18 @@ export function Footer() {
         </nav>
 
         <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-x-6 gap-y-3 text-sm text-brand-gray mb-10">
-          <a href={`mailto:${SUPPORT_EMAIL}`} className="flex items-center gap-2 hover:text-brand-navy transition-colors break-all">
-            <Mail className="w-4 h-4 text-brand-yellow shrink-0" aria-hidden />
-            <span dir="ltr">{SUPPORT_EMAIL}</span>
-          </a>
-          <a href={`tel:${PHONE_TEL}`} className="flex items-center gap-2 hover:text-brand-navy transition-colors">
-            <Phone className="w-4 h-4 text-brand-yellow shrink-0" aria-hidden />
-            <span dir="ltr">{PHONE_DISPLAY}</span>
-          </a>
+          {SUPPORT_EMAIL && (
+            <a href={`mailto:${SUPPORT_EMAIL}`} className="flex items-center gap-2 hover:text-brand-navy transition-colors break-all">
+              <Mail className="w-4 h-4 text-brand-yellow shrink-0" aria-hidden />
+              <span dir="ltr">{SUPPORT_EMAIL}</span>
+            </a>
+          )}
+          {PHONE_DISPLAY && (
+            <a href={`tel:${PHONE_TEL}`} className="flex items-center gap-2 hover:text-brand-navy transition-colors">
+              <Phone className="w-4 h-4 text-brand-yellow shrink-0" aria-hidden />
+              <span dir="ltr">{PHONE_DISPLAY}</span>
+            </a>
+          )}
           <span className="flex items-center gap-2">
             <MapPin className="w-4 h-4 text-brand-yellow shrink-0" aria-hidden />
             <span>{address}</span>

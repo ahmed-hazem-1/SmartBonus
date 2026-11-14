@@ -55,14 +55,18 @@ export function ContactDetails({ title }: { title: string }) {
   return (
     <ContentCard title={title}>
       <ul className="space-y-3">
-        <li className="flex items-start gap-3">
-          <Mail className="w-5 h-5 text-brand-yellow shrink-0 mt-0.5" aria-hidden />
-          <a href={`mailto:${SUPPORT_EMAIL}`} className="text-brand-navy font-semibold hover:text-brand-yellow break-all" dir="ltr">{SUPPORT_EMAIL}</a>
-        </li>
-        <li className="flex items-start gap-3">
-          <Phone className="w-5 h-5 text-brand-yellow shrink-0 mt-0.5" aria-hidden />
-          <a href={`tel:${PHONE_TEL}`} className="text-brand-navy font-semibold hover:text-brand-yellow" dir="ltr">{PHONE_DISPLAY}</a>
-        </li>
+        {SUPPORT_EMAIL && (
+          <li className="flex items-start gap-3">
+            <Mail className="w-5 h-5 text-brand-yellow shrink-0 mt-0.5" aria-hidden />
+            <a href={`mailto:${SUPPORT_EMAIL}`} className="text-brand-navy font-semibold hover:text-brand-yellow break-all" dir="ltr">{SUPPORT_EMAIL}</a>
+          </li>
+        )}
+        {PHONE_DISPLAY && (
+          <li className="flex items-start gap-3">
+            <Phone className="w-5 h-5 text-brand-yellow shrink-0 mt-0.5" aria-hidden />
+            <a href={`tel:${PHONE_TEL}`} className="text-brand-navy font-semibold hover:text-brand-yellow" dir="ltr">{PHONE_DISPLAY}</a>
+          </li>
+        )}
         <li className="flex items-start gap-3">
           <MapPin className="w-5 h-5 text-brand-yellow shrink-0 mt-0.5" aria-hidden />
           <span className="text-brand-navy font-semibold">{address}</span>

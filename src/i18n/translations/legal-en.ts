@@ -189,7 +189,7 @@ export const legalEn: LegalContent = {
   deleteAccount: {
     intro: 'You can request deletion of your Smart Bonus account and personal data at any time.',
     steps: [
-      'Fill in the form below, or email support from the email address registered on your account.',
+      'Fill in the form below with your name, phone number and the email address registered on your account.',
       'We verify that you own the account by contacting you by phone or email.',
       'We process your request within 30 days and confirm by email.',
     ],

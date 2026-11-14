@@ -231,7 +231,7 @@ export const en = {
     submitting: 'Submitting...',
     successTitle: 'Request received',
     successBody: 'Thank you. We will verify ownership and process your request within 30 days. A confirmation will be sent to your email.',
-    errorMsg: 'Something went wrong. Please try again, or email us directly.',
+    errorMsg: 'Something went wrong. Please try again.',
     orEmail: 'Or email us at',
     emailCta: 'Email support',
   },
