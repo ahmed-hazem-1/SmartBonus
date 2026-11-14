@@ -75,13 +75,9 @@ export function Hero() {
     animation,
   });
 
-  const layout = heroLayout();
-
-  const copy = (align: 'center' | 'start') => {
-    const c = align === 'center';
-    const jc = c ? 'justify-center' : 'justify-center lg:justify-start';
-    const tc = c ? 'text-center' : 'text-center lg:text-start';
-    return (
+  const jc = 'justify-center lg:justify-start';
+  const tc = 'text-center lg:text-start';
+  const copy = (
       <div className="space-y-4 lg:space-y-6">
         <div className={`flex ${jc}`}>
           <span className="inline-block px-3 py-1 lg:px-4 lg:py-1.5 rounded-full bg-white/10 text-white text-xs lg:text-sm font-medium border border-white/20 backdrop-blur-sm">
@@ -108,7 +104,7 @@ export function Hero() {
         {/* Headline + story (THE ANSWER) */}
         <div className="space-y-3 lg:space-y-4">
           <h1 className={`text-xl sm:text-2xl lg:text-3xl font-bold text-white leading-tight ${tc}`}>{t.hero.title}</h1>
-          <div className={`${tc} max-w-2xl ${c ? 'mx-auto' : 'mx-auto lg:mx-0'}`}>
+          <div className={`${tc} max-w-2xl mx-auto lg:mx-0`}>
             <p className="text-white/80 text-sm sm:text-base lg:text-lg leading-relaxed inline">{t.hero.divider}{' '}</p>
             <p className="text-brand-accent-soft font-bold text-sm sm:text-base lg:text-lg leading-relaxed inline">{t.hero.story}</p>
           </div>
@@ -125,8 +121,7 @@ export function Hero() {
           </motion.button>
         </div>
       </div>
-    );
-  };
+  );
 
   const chipEls = t.hero.chips.map((label, i) => (
         <span key={i} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-white text-xs sm:text-sm font-semibold shadow-lg whitespace-nowrap">
@@ -141,7 +136,7 @@ export function Hero() {
       <section
         ref={sectionRef}
         id="hero"
-        className={`relative min-h-screen flex flex-col justify-start overflow-hidden fluid-bg-container pt-24 lg:pt-32 pb-12 ${layout === 'b' ? 'lg:justify-center lg:pb-16' : 'lg:pb-20'}`}
+        className="relative min-h-screen flex flex-col justify-start lg:justify-center overflow-hidden fluid-bg-container pt-24 lg:pt-32 pb-12 lg:pb-16"
       >
       {/* Fluid marble blobs — reduced from 6 to 4 for performance.
           Same visual coverage via slightly larger sizes. Animations pause when off-screen. */}
@@ -155,28 +150,11 @@ export function Hero() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-20">
 
-        {/* ── A: Centered copy, big showcase video below, hand-drawn arrow ── */}
-        {layout === 'a' && (
-          <div className="flex flex-col items-center gap-6 lg:gap-4">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="order-2 lg:order-1 w-full max-w-3xl">
-              {copy('center')}
-            </motion.div>
-            <div className="order-1 lg:order-2 w-full flex flex-col items-center">
-              <ArrowNote label={t.hero.arrowLabel} variant="down" isRTL={isRTL} className="hidden lg:flex mb-2" />
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="w-full">
-                <HeroVideo className="max-w-5xl mx-auto" />
-              </motion.div>
-              <ArrowNote label={t.hero.arrowLabel} variant="up" isRTL={isRTL} className="flex lg:hidden mt-3" />
-            </div>
-          </div>
-        )}
-
-        {/* ── B: Split, larger tilted video, floating chips, arrow from copy to video ── */}
-        {layout === 'b' && (
+        {/* Split: copy + larger tilted video with floating chips; arrow from copy to video */}
           <div className="grid lg:grid-cols-[5fr_7fr] gap-8 lg:gap-14 items-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="relative order-2 lg:order-1">
-              {copy('start')}
-              <ArrowNote label={t.hero.arrowLabel} variant="side" isRTL={isRTL} className="hidden lg:flex absolute -bottom-20 end-[-3rem]" />
+              {copy}
+              <ArrowNote label={t.hero.arrowLabel} isRTL={isRTL} className="hidden lg:flex absolute -bottom-20 end-[-3rem]" />
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="order-1 lg:order-2 relative [perspective:1600px]">
               <div className={`transition-transform duration-700 hover:[transform:none] ${isRTL ? 'lg:[transform:rotateY(10deg)_rotateX(4deg)]' : 'lg:[transform:rotateY(-10deg)_rotateX(4deg)]'}`}>
@@ -188,24 +166,6 @@ export function Hero() {
               <div className="flex lg:hidden flex-wrap justify-center gap-2 mt-4">{chips}</div>
             </motion.div>
           </div>
-        )}
-
-        {/* ── C: Centered copy + browser-window video with side chips ── */}
-        {layout === 'c' && (
-          <div className="flex flex-col items-center gap-8 lg:gap-12">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="order-2 lg:order-1 w-full max-w-3xl">
-              {copy('center')}
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="order-1 lg:order-2 relative w-full max-w-5xl">
-              {/* Spotlight beam */}
-              <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[80%] h-48 bg-brand-accent/40 blur-[90px] rounded-full pointer-events-none" aria-hidden />
-              <HeroVideo frame="browser" className="max-w-5xl mx-auto" />
-              <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 -start-10 flex-col gap-3">{chipEls[0]}{chipEls[1]}</div>
-              <div className="hidden lg:flex absolute bottom-10 -end-10">{chipEls[2]}</div>
-              <div className="flex lg:hidden flex-wrap justify-center gap-2 mt-4">{chips}</div>
-            </motion.div>
-          </div>
-        )}
 
       </div>
     </section>
@@ -233,45 +193,29 @@ export function Hero() {
 }
 
 
-/** TEMP: compare hero layouts with ?hero=a|b|c (default b). Remove once one is chosen. */
-function heroLayout(): 'a' | 'b' | 'c' {
-  try {
-    const v = new URLSearchParams(window.location.search).get('hero');
-    if (v === 'a' || v === 'b' || v === 'c') return v;
-  } catch {}
-  return 'b';
-}
-
-/** Hand-drawn style arrow with a short label, pointing at the video. */
-function ArrowNote({ label, variant, isRTL, className = '' }: { label: string; variant: 'down' | 'up' | 'side'; isRTL: boolean; className?: string }) {
-  const path =
-    variant === 'side'
-      ? 'M10 20 C 60 70, 120 70, 150 30 C 160 15, 150 5, 140 15 C 130 25, 150 40, 175 35'
-      : 'M30 8 C 10 30, 60 45, 40 70 C 32 80, 30 88, 34 96';
-  const head = variant === 'side' ? 'M165 26 L177 35 L164 44' : 'M24 86 L34 98 L44 86';
-  const flip = variant === 'side' ? (isRTL ? '-scale-x-100' : '') : variant === 'up' ? '-scale-y-100' : '';
-  const svg = (
-    <motion.svg
-      viewBox={variant === 'side' ? '0 0 185 80' : '0 0 70 104'}
-      className={`${variant === 'side' ? 'w-40 h-16' : 'w-10 h-14'} text-brand-accent-soft ${flip}`}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <motion.path d={path} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.1, delay: 0.6, ease: 'easeInOut' }} />
-      <motion.path d={head} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }} />
-    </motion.svg>
-  );
-  const text = <span className="text-brand-accent-soft font-bold text-sm lg:text-base -rotate-3 whitespace-nowrap">{label}</span>;
-  if (variant === 'side') {
-    return <div className={`items-end gap-1 pointer-events-none ${className}`}>{text}{svg}</div>;
-  }
+/** Hand-drawn style arrow with a short label, pointing from the copy to the video. */
+function ArrowNote({ label, isRTL, className = '' }: { label: string; isRTL: boolean; className?: string }) {
   return (
-    <div className={`flex-col items-center gap-1 pointer-events-none ${className}`}>
-      {variant === 'up' ? <>{svg}{text}</> : <>{text}{svg}</>}
+    <div className={`items-end gap-1 pointer-events-none ${className}`}>
+      <span className="text-brand-accent-soft font-bold text-sm lg:text-base -rotate-3 whitespace-nowrap">{label}</span>
+      <motion.svg
+        viewBox="0 0 185 80"
+        className={`w-40 h-16 text-brand-accent-soft ${isRTL ? '-scale-x-100' : ''}`}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+      >
+        <motion.path
+          d="M10 20 C 60 70, 120 70, 150 30 C 160 15, 150 5, 140 15 C 130 25, 150 40, 175 35"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.1, delay: 0.6, ease: 'easeInOut' }}
+        />
+        <motion.path d="M165 26 L177 35 L164 44" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }} />
+      </motion.svg>
     </div>
   );
 }
