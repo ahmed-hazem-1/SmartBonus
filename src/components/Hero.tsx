@@ -77,7 +77,7 @@ export function Hero() {
 
   return (
     <>
-      <section ref={sectionRef} id="hero" className="relative min-h-screen flex flex-col justify-end pb-0 lg:pb-16 pt-28 lg:pt-32 overflow-hidden fluid-bg-container">
+      <section ref={sectionRef} id="hero" className="relative min-h-screen flex flex-col justify-start lg:justify-end pb-0 lg:pb-16 pt-24 lg:pt-32 overflow-hidden fluid-bg-container">
       {/* Fluid marble blobs — reduced from 6 to 4 for performance.
           Same visual coverage via slightly larger sizes. Animations pause when off-screen. */}
       <div className="fluid-blob" style={{ width: '65%', height: '70%', top: '-10%', left: '-10%', background: 'radial-gradient(circle, #d97706 0%, #b45309 40%, transparent 70%)', ...blobAnimStyle('blob1 18s ease-in-out infinite') }} />
@@ -89,13 +89,13 @@ export function Hero() {
       <div className="absolute inset-0 glass-hero z-10 pointer-events-none"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-20">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-end">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-end">
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-col space-y-8 self-end"
+            className="flex flex-col space-y-8 self-end pb-12 lg:pb-0"
           >
             <div className="space-y-4 lg:space-y-6">
               {/* Badge */}
@@ -156,7 +156,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-col items-center w-full pb-10 lg:pb-0 self-center"
+            className="order-first lg:order-none flex flex-col items-center w-full self-center"
           >
             {/* Landscape explainer video (replaces the phone mockup) */}
             <HeroVideo />
