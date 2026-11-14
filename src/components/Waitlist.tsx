@@ -2,9 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/Button';
 import { ChevronDown } from 'lucide-react';
 import { useI18n } from '../i18n';
-
-// ⚠️ REPLACE THIS with your deployed Google Apps Script Web App URL
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2fTaQwOPTonn-gGyTMCH1rzADQPF0J5iXXUFCLb5zY3tA6qFxLLarxUVHwP4vJm0r/exec';
+import { GOOGLE_SCRIPT_URL } from '../config/contact';
 
 export function Waitlist() {
   const { t } = useI18n();

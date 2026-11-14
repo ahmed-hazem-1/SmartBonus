@@ -9,6 +9,25 @@ export type Locale = 'en' | 'ar-sa' | 'ar-eg';
 const TRANSLATIONS: Record<Locale, Translations> = { en, 'ar-sa': arSa, 'ar-eg': arEg };
 
 const STORAGE_KEY = 'sb-locale';
+const DEFAULT_LOCALE: Locale = 'ar-sa';
+
+const isLocale = (v: unknown): v is Locale => v === 'en' || v === 'ar-sa' || v === 'ar-eg';
+
+// Reads ?lang=en|ar-sa|ar-eg (overrides and stores), otherwise the stored value, otherwise Arabic.
+function resolveInitialLocale(): Locale {
+  try {
+    const fromQuery = new URLSearchParams(window.location.search).get('lang');
+    if (isLocale(fromQuery)) {
+      try { localStorage.setItem(STORAGE_KEY, fromQuery); } catch { /* storage unavailable */ }
+      return fromQuery;
+    }
+  } catch { /* no window/location */ }
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (isLocale(stored)) return stored;
+  } catch { /* storage unavailable (private mode, blocked) */ }
+  return DEFAULT_LOCALE;
+}
 
 interface I18nContextValue {
   locale: Locale;
@@ -21,15 +40,11 @@ interface I18nContextValue {
 const I18nContext = createContext<I18nContextValue | null>(null);
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === 'en' || stored === 'ar-sa' || stored === 'ar-eg') return stored;
-    return 'en';
-  });
+  const [locale, setLocaleState] = useState<Locale>(resolveInitialLocale);
 
   const setLocale = (l: Locale) => {
     setLocaleState(l);
-    localStorage.setItem(STORAGE_KEY, l);
+    try { localStorage.setItem(STORAGE_KEY, l); } catch { /* storage unavailable */ }
   };
 
   const t = TRANSLATIONS[locale];
