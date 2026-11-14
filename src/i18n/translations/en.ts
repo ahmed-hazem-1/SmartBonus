@@ -36,6 +36,13 @@ export const en = {
     ],
     divider: 'These are not just operational challenges — they are profits quietly slipping away.',
     story: 'And this is where Smart Bonus begins.',
+    video: {
+      label: 'Smart Bonus explainer video',
+      soundOn: 'Turn sound on',
+      soundOff: 'Mute',
+      play: 'Play video',
+      pause: 'Pause video',
+    },
   },
 
   trust: {

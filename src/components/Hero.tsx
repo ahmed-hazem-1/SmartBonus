@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { PhoneMockup } from './PhoneMockup';
+import { HeroVideo } from './HeroVideo';
 import { useI18n } from '../i18n';
 
 export function Hero() {
@@ -156,10 +156,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-col items-center w-full h-[260px] sm:h-[300px] lg:h-auto overflow-hidden lg:overflow-visible self-end"
+            className="flex flex-col items-center w-full pb-10 lg:pb-0 self-center"
           >
-            {/* Mobile App Mockup Carousel */}
-            <PhoneMockup />
+            {/* Landscape explainer video (replaces the phone mockup) */}
+            <HeroVideo />
           </motion.div>
 
         </div>
